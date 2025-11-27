@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do Web App</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #111827;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .task-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .task-input input,
+        .task-input button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .task-input input {
+            flex: 1;
+        }
+
+        .task-input button {
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .task-input button:hover {
+            background: #2563eb;
+        }
+
+        #taskList {
+            list-style: none;
+        }
+
+        .task {
+            background: #1f2937;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .buttons button {
+            margin-left: 5px;
+            padding: 5px 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit {
+            background: #f59e0b;
+        }
+
+        .delete {
+            background: #ef4444;
+        }
+
+        .done {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>To-Do Web App</h1>
+
+        <div class="task-input">
+            <input type="text" id="taskName" placeholder="Enter task..." />
+            <input type="datetime-local" id="taskDateTime" />
+            <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+<script>
+    function addTask() {
+        const name = document.getElementById("taskName").value.trim();
+        const dateTime = document.getElementById("taskDateTime").value;
+
+        if (name === "") {
+            alert("Enter a task!");
+            return;
+        }
+
+        const taskList = document.getElementById("taskList");
+
+        const li = document.createElement("li");
+        li.className = "task";
+
+        li.innerHTML = `
+            <div>
+                <strong>${name}</strong><br>
+                <small>${dateTime ? new Date(dateTime).toLocaleString() : "No date set"}</small>
+            </div>
+            <div class="buttons">
+                <button class="done" onclick="toggleDone(this)">Done</button>
+                <button class="edit" onclick="editTask(this)">Edit</button>
+                <button class="delete" onclick="deleteTask(this)">Delete</button>
+            </div>
+        `;
+
+        taskList.appendChild(li);
+
+        document.getElementById("taskName").value = "";
+        document.getElementById("taskDateTime").value = "";
+    }
+
+    function toggleDone(btn) {
+        btn.parentElement.parentElement.classList.toggle("completed");
+    }
+
+    function deleteTask(btn) {
+        btn.parentElement.parentElement.remove();
+    }
+
+    function editTask(btn) {
+        const task = btn.parentElement.parentElement;
+        const name = prompt("Edit task name:", task.querySelector("strong").innerText);
+
+        if (name !== null && name.trim() !== "") {
+            task.querySelector("strong").innerText = name.trim();
+        }
+    }
+</script>
+
+</body>
+</html>
